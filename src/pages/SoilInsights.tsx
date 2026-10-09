@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react';
+import { useState } from 'react';
 import {
   Droplets, Thermometer, FlaskConical, Leaf, AlertTriangle, CheckCircle2,
   Info, RefreshCw, Zap, Battery, Signal
@@ -6,6 +6,7 @@ import {
 import { useI18n } from '../i18n';
 import { StatCard, StatusChip, timeAgo, formatMetricValue, humanizeMetric } from '../components/ui';
 import type { SoilReadingResponse, SoilMetric } from '../components/types';
+import { soilData } from '../data/demoData';
 
 type InsightLevel = 'good' | 'warn' | 'info';
 interface Insight {
@@ -81,11 +82,10 @@ const toneFor = (lvl: InsightLevel) => ({
 
 export default function SoilInsights() {
   const { t } = useI18n();
-  const [soil, setSoil] = useState<SoilReadingResponse | null>(null);
+  const [soil, setSoil] = useState<SoilReadingResponse>(soilData);
   const [syncingIds, setSyncingIds] = useState<Record<string, boolean>>({});
 
   const refresh = () => { fetch('/api/soil-readings/latest').then(r => r.json()).then(setSoil); };
-  useEffect(() => { refresh(); }, []);
 
   const syncSensor = async (id: string) => {
     setSyncingIds(prev => ({ ...prev, [id]: true }));

@@ -1,8 +1,9 @@
-import { useEffect, useState } from 'react';
+import { useState } from 'react';
 import type { LucideIcon } from 'lucide-react';
 import { Plus, RotateCcw, History, Package, FileText, Sprout, Leaf, CircleDot } from 'lucide-react';
 import { useI18n } from '../i18n';
 import type { FarmRecordsResponse } from '../components/types';
+import { farmRecords } from '../data/demoData';
 
 function cropIconFor(name: string): LucideIcon {
   const n = name.toLowerCase();
@@ -19,8 +20,7 @@ function fmt(iso: string) {
 
 export default function FarmRecords() {
   const { t } = useI18n();
-  const [data, setData] = useState<FarmRecordsResponse | null>(null);
-  useEffect(() => { fetch('/api/farm/records').then(r => r.json()).then(setData); }, []);
+  const [data] = useState<FarmRecordsResponse>(farmRecords);
 
   const total = data?.history.reduce((s, r) => s + r.yieldKg, 0) ?? 0;
   const count = data?.history.length ?? 0;

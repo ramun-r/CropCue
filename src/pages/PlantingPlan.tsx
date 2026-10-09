@@ -1,10 +1,11 @@
-import { useEffect, useState } from 'react';
+import { useState } from 'react';
 import type { LucideIcon } from 'lucide-react';
 import {
   CheckCircle2, Circle, Shovel, Sprout, Search, Lightbulb, CloudRain, AlertTriangle, Leaf, CircleDot
 } from 'lucide-react';
 import { useI18n } from '../i18n';
 import type { PlantingPlanResponse, ForecastResponse } from '../components/types';
+import { plantingPlan, weatherData } from '../data/demoData';
 
 function cropIconFor(name: string): LucideIcon {
   const n = name.toLowerCase();
@@ -31,13 +32,9 @@ function formatDayRange(dates: string[]): string {
 
 export default function PlantingPlan() {
   const { t, tf } = useI18n();
-  const [data, setData] = useState<PlantingPlanResponse | null>(null);
-  const [weather, setWeather] = useState<ForecastResponse | null>(null);
+  const [data] = useState<PlantingPlanResponse>(plantingPlan);
+  const [weather] = useState<ForecastResponse>(weatherData);
   const [done, setDone] = useState<Record<number, boolean>>({});
-  useEffect(() => {
-    fetch('/api/planting-plan').then(r => r.json()).then(setData);
-    fetch('/api/weather/forecast').then(r => r.json()).then(setWeather);
-  }, []);
 
   const toggle = (i: number) => setDone(prev => ({ ...prev, [i]: !prev[i] }));
 

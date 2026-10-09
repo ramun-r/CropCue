@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react';
+import { useState } from 'react';
 import { Link } from 'react-router-dom';
 import {
   Droplets, Sprout, CalendarDays, History, Hand, Sun, Thermometer, Leaf, Activity, CloudRain,
@@ -7,6 +7,7 @@ import {
 import { StatusChip, timeAgo } from '../components/ui';
 import { useI18n } from '../i18n';
 import type { SoilReadingResponse, ForecastResponse } from '../components/types';
+import { soilData, weatherData } from '../data/demoData';
 
 const CARDS = [
   { tag: 'card1_tag', title: 'card1_title', body: 'card1_body', to: '/soil',    icon: Droplets,    action: 'card1_action' },
@@ -31,13 +32,8 @@ function formatDayRange(dates: string[]): string {
 
 export default function Dashboard() {
   const { t, tf } = useI18n();
-  const [soil, setSoil] = useState<SoilReadingResponse | null>(null);
-  const [weather, setWeather] = useState<ForecastResponse | null>(null);
-
-  useEffect(() => {
-    fetch('/api/soil-readings/latest').then(r => r.json()).then(setSoil);
-    fetch('/api/weather/forecast').then(r => r.json()).then(setWeather);
-  }, []);
+  const [soil] = useState<SoilReadingResponse>(soilData);
+  const [weather] = useState<ForecastResponse>(weatherData);
 
   const l = soil?.legacyCompat;
   const totalRain = weather?.days?.reduce((s, d) => s + d.rainfall, 0) ?? 0;

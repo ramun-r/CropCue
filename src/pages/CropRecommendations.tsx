@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react';
+import { useState } from 'react';
 import type { LucideIcon } from 'lucide-react';
 import {
   Plus, Info, Ban, Users, AlertTriangle, Sprout, Leaf, CircleDot,
@@ -6,6 +6,7 @@ import {
 } from 'lucide-react';
 import { useI18n } from '../i18n';
 import type { CropRecResponse, ForecastResponse } from '../components/types';
+import { cropRecommendations, weatherData } from '../data/demoData';
 
 function cropIconFor(name: string): LucideIcon {
   const n = name.toLowerCase();
@@ -38,12 +39,8 @@ function formatDayRange(dates: string[]): string {
 
 export default function CropRecommendations() {
   const { t, tf } = useI18n();
-  const [data, setData] = useState<CropRecResponse | null>(null);
-  const [weather, setWeather] = useState<ForecastResponse | null>(null);
-  useEffect(() => {
-    fetch('/api/recommendations/crops').then(r => r.json()).then(setData);
-    fetch('/api/weather/forecast').then(r => r.json()).then(setWeather);
-  }, []);
+  const [data] = useState<CropRecResponse>(cropRecommendations);
+  const [weather] = useState<ForecastResponse>(weatherData);
 
   const rainyDays = (weather?.days ?? []).filter(d => d.rainfall >= 10).map(d => d.date);
   const anyHeavy = rainyDays.length > 0;
