@@ -1,0 +1,4 @@
+com\cropcue\backend\insight\InsightController.class
+com\cropcue\backend\insight\InsightResponse.class
+com\cropcue\backend\CropCueApplication.class
+com\cropcue\backend\insight\InsightRequest.class
