@@ -1,5 +1,6 @@
 import { spawn } from 'node:child_process';
 import net from 'node:net';
+import { fileURLToPath } from 'node:url';
 
 const preferredPort = Number(process.env.PORT ?? process.env.VITE_API_PORT ?? 3005);
 
@@ -24,16 +25,13 @@ function findAvailablePort(startPort) {
 
 const apiPort = await findAvailablePort(preferredPort);
 const env = { ...process.env, PORT: String(apiPort), VITE_API_PORT: String(apiPort) };
+const viteCli = fileURLToPath(new URL('../node_modules/vite/bin/vite.js', import.meta.url));
+const tsxCli = fileURLToPath(new URL('../node_modules/tsx/dist/cli.mjs', import.meta.url));
+const spawnOptions = { stdio: 'inherit', env };
 
-const frontend = spawn('npx', ['vite', '--host', '0.0.0.0'], {
-  stdio: 'inherit',
-  env
-});
+const frontend = spawn(process.execPath, [viteCli, '--host', '0.0.0.0'], spawnOptions);
 
-const backend = spawn('npx', ['tsx', 'watch', 'server/index.ts'], {
-  stdio: 'inherit',
-  env
-});
+const backend = spawn(process.execPath, [tsxCli, 'watch', 'server/index.ts'], spawnOptions);
 
 const shutdown = (signal) => {
   frontend.kill(signal);
@@ -42,6 +40,18 @@ const shutdown = (signal) => {
 
 process.on('SIGINT', () => shutdown('SIGINT'));
 process.on('SIGTERM', () => shutdown('SIGTERM'));
+
+frontend.on('error', (error) => {
+  console.error(`Failed to start frontend: ${error.message}`);
+  backend.kill('SIGTERM');
+  process.exit(1);
+});
+
+backend.on('error', (error) => {
+  console.error(`Failed to start backend: ${error.message}`);
+  frontend.kill('SIGTERM');
+  process.exit(1);
+});
 
 frontend.on('exit', (code, signal) => {
   backend.kill(signal ?? 'SIGTERM');
