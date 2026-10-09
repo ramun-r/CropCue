@@ -13,8 +13,8 @@ export const soilData: SoilReadingResponse = {
   location: 'Limpopo, South Africa',
   overallStatus: 'low_battery',
   capturedAt,
-  sensorsConnected: 3,
-  sensorsTotal: 3,
+  sensorsConnected: 1,
+  sensorsTotal: 1,
   sensors: [
     {
       id: 'sensor-001',
@@ -28,43 +28,14 @@ export const soilData: SoilReadingResponse = {
       supportedMetricKeys: ['moisture', 'temperature', 'ec'],
       values: { moisture: 42, temperature: 24.6, ec: 1.12 }
     },
-    {
-      id: 'sensor-002',
-      name: 'Field A · NPK Pod',
-      model: 'Atterotech NPK-100 (N + P + K + pH)',
-      zone: 'Centre Bed',
-      status: 'connected',
-      batteryPercent: 61,
-      signalStrength: 58,
-      lastSyncAt: capturedAt,
-      supportedMetricKeys: ['ph', 'nitrogen', 'phosphorus', 'potassium'],
-      values: { ph: 6.4, nitrogen: 38, phosphorus: 22, potassium: 31 }
-    },
-    {
-      id: 'sensor-003',
-      name: 'Field A · Tensiometer',
-      model: 'Irrometer LT (Soil Water Tension)',
-      zone: 'South Low',
-      status: 'low_battery',
-      batteryPercent: 12,
-      signalStrength: 41,
-      lastSyncAt: capturedAt,
-      supportedMetricKeys: ['tension'],
-      values: { tension: 28 }
-    }
   ],
   metrics: [
     { key: 'moisture', label: 'Volumetric Water Content', unit: '%', value: 42, rangeMin: 0, rangeMax: 60, fromSensorId: 'sensor-001', fromSensorName: 'Field A · Main Probe', capturedAt },
     { key: 'temperature', label: 'Soil Temperature', unit: '°C', value: 24.6, rangeMin: -10, rangeMax: 60, fromSensorId: 'sensor-001', fromSensorName: 'Field A · Main Probe', capturedAt },
-    { key: 'ec', label: 'Electrical Conductivity', unit: 'mS/cm', value: 1.12, rangeMin: 0, rangeMax: 10, fromSensorId: 'sensor-001', fromSensorName: 'Field A · Main Probe', capturedAt },
-    { key: 'ph', label: 'Soil pH', unit: 'pH', value: 6.4, rangeMin: 3, rangeMax: 10, fromSensorId: 'sensor-002', fromSensorName: 'Field A · NPK Pod', capturedAt },
-    { key: 'nitrogen', label: 'Available Nitrogen', unit: 'ppm', value: 38, rangeMin: 0, rangeMax: 200, fromSensorId: 'sensor-002', fromSensorName: 'Field A · NPK Pod', capturedAt },
-    { key: 'phosphorus', label: 'Available Phosphorus', unit: 'ppm', value: 22, rangeMin: 0, rangeMax: 200, fromSensorId: 'sensor-002', fromSensorName: 'Field A · NPK Pod', capturedAt },
-    { key: 'potassium', label: 'Available Potassium', unit: 'ppm', value: 31, rangeMin: 0, rangeMax: 300, fromSensorId: 'sensor-002', fromSensorName: 'Field A · NPK Pod', capturedAt },
-    { key: 'tension', label: 'Soil Water Tension', unit: 'kPa', value: 28, rangeMin: 0, rangeMax: 100, fromSensorId: 'sensor-003', fromSensorName: 'Field A · Tensiometer', capturedAt }
+    { key: 'ec', label: 'Electrical Conductivity', unit: 'mS/cm', value: 1.12, rangeMin: 0, rangeMax: 10, fromSensorId: 'sensor-001', fromSensorName: 'Field A · Main Probe', capturedAt }
   ],
-  legacyCompat: { moisture: 42, temperature: 24.6, ph: 6.4, nitrogen: 38, phosphorus: 22, potassium: 31 },
-  availableMetricKeys: ['moisture', 'temperature', 'ec', 'ph', 'nitrogen', 'phosphorus', 'potassium', 'tension']
+  legacyCompat: { moisture: 42, temperature: 24.6, ph: null, nitrogen: null, phosphorus: null, potassium: null },
+  availableMetricKeys: ['moisture', 'temperature', 'ec']
 };
 
 export const weatherData: ForecastResponse = {
